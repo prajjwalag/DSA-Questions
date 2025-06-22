@@ -1,31 +1,26 @@
 class Solution {
-    public int findMin(ArrayList<Integer> arr) {
-        // Initialize low and high indices
-        int low = 0, high = arr.size() - 1;
-        
-        // Initialize ans to maximum integer value
-        int ans = Integer.MAX_VALUE;
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            
-            // Check if left part is sorted
-            if (arr.get(low) <= arr.get(mid)) {
-                /* Update ans with minimum 
-                of ans and arr[low] */
-                ans = Math.min(ans, arr.get(low));
-                
-                // Move to the right part
-                low = mid + 1;
-            } else {
-                /* Update ans with minimum 
-                   of ans and arr[mid] */
-                ans = Math.min(ans, arr.get(mid));
-                
-                // Move to the left part
+    public int findMin(ArrayList<Integer> nums) {
+        int low = 0;
+        int high = nums.size()-1;
+        int lowest = Integer.MAX_VALUE;
+
+        //Our answer is the pivot index, Where the lowest will lie because it is a sorted rotated array.
+
+        while(low <= high) {
+            int mid = low + (high - low)/2;
+
+            if (nums.get(low) <= nums.get(mid)) {  //If Left Half is Sorted, Pivot Element might be in the right half, or the low index is the pivot index
+                if(nums.get(low) < lowest) {
+                    lowest = nums.get(low);
+                }
+                low = mid + 1; 
+            } else { //If Right Half is Sorted, Pivot element might be mid element or it might exist in the left half.
+                if(nums.get(mid) < lowest) { 
+                    lowest = nums.get(mid);
+                }
                 high = mid - 1;
             }
         }
-        // Return the minimum element found
-        return ans;
+        return lowest;
     }
 }
