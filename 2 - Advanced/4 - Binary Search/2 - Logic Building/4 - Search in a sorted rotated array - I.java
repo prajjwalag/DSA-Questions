@@ -1,35 +1,27 @@
 class Solution {
-    public int search(int[] nums, int target) {
-        int low = 0, high = nums.length - 1;
+    public int search(int[] nums, int k) {
+       int low = 0;
+       int high = nums.length-1;
+       
+       while(low <= high) {
+            int mid = low + (high - low)/2;
 
-        // Applying binary search algorithm 
-        while (low <= high) {
-            int mid = (low + high) / 2;
-
-            // Check if mid points to the target
-            if (nums[mid] == target) return mid;
-
-            // Check if the left part is sorted
-            if (nums[low] <= nums[mid]) {
-                if (nums[low] <= target && target <= nums[mid]) {
-                    // Target exists in the left sorted part
-                    high = mid - 1;
-                } else {
-                    // Target does not exist in the left sorted part
+            if(nums[mid] == k) {
+                return mid;
+            } else if (nums[low] <= nums[mid]) { //Left Half is Sorted
+                if(nums[low] <= k && k <= nums[mid]) {// Target is greater than low and lower than mid, so it will exist in Left Half 
+                    high = mid - 1; 
+                } else { //Target is either greater than mid or lower than low, so it will not exist in Left Half 
                     low = mid + 1;
                 }
-            } else {
-                // Check if the right part is sorted
-                if (nums[mid] <= target && target <= nums[high]) {
-                    // Target exists in the right sorted part
+            } else { //else (nums[mid] <= nums[high]) //Right Half is Sorted
+                if(nums[mid] <= k && k <= nums[high]) { // Target is greater than mid and lower than high, so it will exist in Right Half
                     low = mid + 1;
-                } else {
-                    // Target does not exist in the right sorted part
+                } else { // Target is either greater than high or lower than mid, so it will not exist in Right Half
                     high = mid - 1;
                 }
             }
-        }
-        // If target is not found
-        return -1;
+       }
+       return -1;
     }
 }
