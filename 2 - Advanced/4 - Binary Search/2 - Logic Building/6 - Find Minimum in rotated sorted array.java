@@ -8,6 +8,14 @@ class Solution {
 
         while(low <= high) {
             int mid = low + (high - low)/2;
+            
+            //If Search Space is Already Sorted, Then Nums[Low] will always be the answer.
+            if(nums.get(low) <= nums.get(high)){
+                if(nums.get(low) < lowest) {
+                    lowest = nums.get(low);
+                }
+                break;
+            }
 
             if (nums.get(low) <= nums.get(mid)) {  //If Left Half is Sorted, Pivot Element might be in the right half, or the low index is the pivot index
                 if(nums.get(low) < lowest) {
@@ -24,3 +32,5 @@ class Solution {
         return lowest;
     }
 }
+// Time Complexity: O(log n)
+// Space Complexity: O(1)
