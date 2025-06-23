@@ -1,23 +1,41 @@
 class Solution {
-    public long floorSqrt(long n) {
-        long low = 1, high = n;
+    //Aproach 1
+    public long floorSqrt1(long n) {
+        long low = 1;
+        long high = n;
+        long sqrt = 0;
         
-        // Binary search on the answer space
-        while (low <= high) {
-            long mid = (long)(low + high) / 2;
-            long val = mid * mid;
-            
-            // Check if val is less than or equal to n
-            if (val <= (long)(n)) {
-                // Move to the right part
-                low = (int)(mid + 1);
+        while(low <= high) {
+            long mid = low + (high - low)/2;
+
+            long square = mid*mid;
+            if(square == n) {
+                return mid;
+            } else if(square < n) {
+                sqrt = mid;
+                low = mid + 1;
             } else {
-                // Move to the left part
-                high = (int)(mid - 1);
+                high = mid - 1;
             }
         }
+
+        return sqrt;
+    }
+    //Aproach 2
+     public long floorSqrt2(long n) {
+        long low = 1;
+        long high = n;
         
-        // Return the floor of square root
+        while(low <= high) {
+            long mid = low + (high - low)/2;
+
+            if(mid*mid <= n) {
+                low = mid + 1;
+            } else {
+                high = mid - 1;
+            }
+        }
+
         return high;
     }
 }
