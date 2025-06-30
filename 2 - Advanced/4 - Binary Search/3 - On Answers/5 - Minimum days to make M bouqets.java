@@ -1,83 +1,49 @@
 
 class Solution {
-     private boolean possible(int[] nums, int day, int m, int k) {
-        int n = nums.length; 
-        
-        // Count of flowers bloomed
-        int cnt = 0; 
-        
-        // Count of bouquets formed
-        int noOfB = 0; 
+    public int calculateNumberOfBouqets(int[] nums, int day, int k, int m) {
+      int count = 0;
+      int numberOfBouqets = 0;
 
-        // Count number of bouquets that can be formed
-        for (int i = 0; i < n; i++) {
-            if (nums[i] <= day) {
-                // Increment flower count
-                cnt++; 
-            } else {
-                /* Calculate number of bouquets
-                formed with flowers <= day */
-                noOfB += (cnt / k);
-                
-                // Reset flower count
-                cnt = 0; 
-            }
+      for(int i = 0; i < nums.length; i++) {
+        if(day >= nums[i]) {
+          count++;
+        } else  {
+          numberOfBouqets += count/k;
+          count = 0;
         }
-        // Add remaining flowers as a bouquet
-        noOfB += (cnt / k); 
-
-        /* Return true if enough 
-        bouquets can be formed */
-        return noOfB >= m; 
+      }
+      numberOfBouqets += count/k;
+      return numberOfBouqets;
     }
-
-    /* Function to find the earliest day to
-    make m bouquets of k flowers each*/
     public int roseGarden(int n, int[] nums, int k, int m) {
-        
-        /* Calculate the minimum 
-           number of flowers required*/
-        long val = (long) m * k; 
-        
-        /* Impossible case: not enough 
-           flowers to make m bouquets*/
-        if (val > n) return -1; 
-        
-        /* Find maximum and minimum
-           bloom days in the array */
-        int mini = Integer.MAX_VALUE, maxi = Integer.MIN_VALUE;
-        for (int i = 0; i < n; i++) {
-            mini = Math.min(mini, nums[i]); 
-            maxi = Math.max(maxi, nums[i]); 
+        long requiredNumberOfRoses = (long) k * m;
+
+        if(n < requiredNumberOfRoses) {
+          return -1;
         }
 
-        /* Binary search to find the
-           earliest day to make m bouquets */
-        int left = mini, right = maxi, ans = -1;
-        while (left <= right) {
-            
-            // Calculate the middle day
-            int mid = left + (right - left) / 2; 
-            
-            /* Check if it's possible to 
-               make m bouquets on day mid */
-            if (possible(nums, mid, m, k)) {
-                
-                // Update the answer to mid
-                ans = mid; 
-                
-                // Try for a smaller day
-                right = mid - 1; 
-            } else {
-                left = mid + 1; 
-            }
+        int max = Integer.MIN_VALUE;
+        int min = Integer.MAX_VALUE;
+        for(int i = 0; i < n; i++)  {
+          max = Math.max(nums[i], max);
+          min = Math.min(nums[i], min);
         }
-        
-        /* Return the earliest day or
-        -1 if no such day exists*/
-        return ans; 
+
+        int low = min;
+        int high = max;
+
+        while(low <= high) {
+          int mid = low + (high - low)/2;
+
+          int possibleNumberOfBouqets = calculateNumberOfBouqets(nums, mid, k, m);
+          if(possibleNumberOfBouqets >= m) {
+            high = mid - 1;
+          } else {
+            low = mid + 1;
+          }
+        }
+        return low;
     }
-
 }
 
 
