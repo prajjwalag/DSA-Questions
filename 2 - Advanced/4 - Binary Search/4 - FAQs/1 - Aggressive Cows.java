@@ -1,45 +1,41 @@
 class Solution {
-      private boolean canWePlace(int[] nums, int dist, int cows) {
-        // Size of array
-        int n = nums.length;
+    public boolean canWePlace(int[] nums, int noOfCows, int minDistance) {
+      int cowsCount = 1;
+      int lastCowPosition = nums[0];
 
-        // Number of cows placed
-        int cntCows = 1;
-
-        // Position of last placed cow
-        int last = nums[0];
-        
-        for (int i = 1; i < n; i++) {
-            if (nums[i] - last >= dist) {
-                // Place next cow
-                cntCows++;
-
-                // Update the last location
-                last = nums[i];
-            }
-            if (cntCows >= cows) return true;
+      for(int i = 1; i < nums.length; i++) {
+        if(nums[i] - lastCowPosition >= minDistance) {
+          lastCowPosition = nums[i];
+          cowsCount++;
         }
-        return false;
+
+        if(cowsCount >= noOfCows) {
+          return true;
+        }
+      }
+      return false;
     }
 
-    /* Function to find the maximum possible minimum
-    distance 'k' cows can have between them in nums */
     public int aggressiveCows(int[] nums, int k) {
-        // Size of array
-        int n = nums.length;
-        // Sort the nums
-        Arrays.sort(nums);
+      Arrays.sort(nums);
 
-        int low = 1, high = nums[n - 1] - nums[0];
+      int max = Integer.MIN_VALUE;
 
-        //Apply binary search:
-        while (low <= high) {
-            int mid = (low + high) / 2;
-            if (canWePlace(nums, mid, k) == true) {
-                low = mid + 1;
-            }
-            else high = mid - 1;
+      for(int i = 0; i < nums.length; i++) {
+        max = Math.max(max, nums[i]);
+      }
+
+      int low = 1;
+      int high = max;
+
+      while(low <= high) {
+        int mid = low + (high - low)/2;
+        if(canWePlace(nums, k, mid)) {
+          low = mid + 1;
+        } else {
+          high = mid - 1;
         }
-        return high;
-    }
+      }
+      return high;
+    } 
 }
