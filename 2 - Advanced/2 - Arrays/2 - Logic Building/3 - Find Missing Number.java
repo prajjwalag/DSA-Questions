@@ -1,9 +1,10 @@
 
 /*
 Approach 1:
-1. Initialize two variables xor1, xor2 as 0. xor1 variable will calculate the XOR of 1 to N
-2. Calculate the XOR of all the elements in the array by xor2 = xor2 ^ arr[i]..
-3. Finally, the answer will be the XOR of xor1 and xor2.
+ 
+1. Calculate the summation of first N natural numbers(i.e. 1 to N) using the formula (N*(N+1))/2 and store in variable sum1
+2. Then add all the array elements by iterating in the array and store it in variable sum2
+3. Finally, consider the difference between the sum1and sum2, return it.
 */
 
 
